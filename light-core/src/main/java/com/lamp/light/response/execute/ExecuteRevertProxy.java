@@ -8,7 +8,7 @@ import io.netty.handler.codec.http.HttpResponse;
 
 public class ExecuteRevertProxy implements ExecuteRevert {
 
-    private Map<Ret>
+//    private Map<Ret>
     
     @Override
     public <T> T execute(HttpResponse httpResponse, AsynReturn asynReturn) {

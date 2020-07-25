@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.lamp.light.Call;
 import com.lamp.light.Interceptor;
 import com.lamp.light.handler.Coordinate.ParametersType;
 import com.lamp.light.handler.CoordinateHandler.CoordinateHandlerWrapper;
@@ -110,7 +111,7 @@ public class HandleProxy implements InvocationHandler {
             object =  asynReturn.getObject();
         }else if(handleMethod.returnMode == ReturnMode.CALL) {
             object = new DefaultCall<>(asynReturn ,nettyClient );
-            asynReturn.setCall(object);
+            asynReturn.setCall((Call<Object>)object);
         }
         return object;
     }
@@ -169,7 +170,7 @@ public class HandleProxy implements InvocationHandler {
             Object object = args[coordinate.getIndex()];
             if (Objects.equals(coordinate.getType(), ParametersType.BASIC)
                 || Objects.equals(coordinate.getType(), ParametersType.PACKING)) {
-                coordinateHandler.handler(coordinate.getKey(), object.toString());
+                coordinateHandler.handler(coordinate.getKey(), TypeToString.ObjectToString(object));
             } else if (Objects.equals(coordinate.getType(), ParametersType.STRING)) {
                 coordinateHandler.handler(coordinate.getKey(), (String)object);
             } else if (Objects.equals(coordinate.getType(), ParametersType.MAP)) {
@@ -185,6 +186,8 @@ public class HandleProxy implements InvocationHandler {
             } else if (Objects.equals(coordinate.getType(), ParametersType.OBJECT)) {
                 coordinateHandler.handler(coordinate.getKey(),
                     TypeToString.ObjectToString(coordinate.getMethod().invoke(object)));
+            } else if (Objects.equals(coordinate.getType(), ParametersType.UPLOAD)) {
+                coordinateHandler.handler(coordinate.getKey(),object);
             }
         }
         coordinateHandler.clean();

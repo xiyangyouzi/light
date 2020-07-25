@@ -8,8 +8,7 @@ public class CallSynsExecuteRevert extends AbstractExecuteRevert{
 
     @Override
     public <T>T execute(HttpResponse httpResponse, AsynReturn asynReturn) {
-       
-        
+        return null;
     }
 
     

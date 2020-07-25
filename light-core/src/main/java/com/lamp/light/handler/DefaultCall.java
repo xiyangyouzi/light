@@ -1,5 +1,7 @@
 package com.lamp.light.handler;
 
+import java.net.InetSocketAddress;
+
 import com.lamp.light.Call;
 import com.lamp.light.Callback;
 import com.lamp.light.netty.NettyClient;
@@ -24,6 +26,7 @@ public class DefaultCall<T>  implements Call<T> {
         this.nettyClient = nettyClient;
     }
 
+    InetSocketAddress inetSocketAddress;
     @Override
     public Response<T> execute() {
         nettyClient.write(asynReturn, inetSocketAddress);

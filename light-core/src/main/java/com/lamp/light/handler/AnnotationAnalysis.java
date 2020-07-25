@@ -1,11 +1,13 @@
 package com.lamp.light.handler;
 
+import java.io.InputStream;
+import java.io.Reader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Type;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import com.lamp.light.Call;
 import com.lamp.light.annotation.Body;
 import com.lamp.light.annotation.Cookie;
 import com.lamp.light.annotation.Field;
+import com.lamp.light.annotation.File;
 import com.lamp.light.annotation.GET;
 import com.lamp.light.annotation.Header;
 import com.lamp.light.annotation.Headers;
@@ -47,6 +50,7 @@ public class AnnotationAnalysis {
         DATA_ANNOTION.put(Query.class, Query.class);
         DATA_ANNOTION.put(Field.class, Field.class);
         DATA_ANNOTION.put(Body.class, Body.class);
+        DATA_ANNOTION.put(File.class, File.class);
 
         for (Class<?> clazz : DATA_ANNOTION.keySet()) {
             try {
@@ -257,6 +261,17 @@ public class AnnotationAnalysis {
     }
 
     private ParametersType getParametersType(Class<?> clazz,Class<?> dataClazz) {
+        if (File.class.isAssignableFrom(dataClazz)) {
+            if (String.class.equals(clazz) || InputStream.class.isAssignableFrom(clazz) || Reader.class.isAssignableFrom(clazz)) {
+                return ParametersType.UPLOAD;
+            }
+            if (List.class.isAssignableFrom(clazz)) {
+                return ParametersType.UPLOAD_LIST;
+            }
+            if (Map.class.isAssignableFrom(clazz)) {
+                return ParametersType.UPLOAD_MAP;
+            }
+        }
         if (clazz.isPrimitive()) {
             return ParametersType.BASIC;
         }
