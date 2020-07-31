@@ -12,7 +12,7 @@ import com.lamp.light.annotation.Query;
 public interface TestInterface {
     
     @POST("/testFile")
-    public ReturnObject testFile(@Header({"key","id"}) ReturnObject returnObject, @File({"fileName"}) String fileName);
+    public ReturnObject testFile(@Header({"key","id"}) ReturnObject returnObject, @File({"fileName"}) File file);
 
     @Headers({"Connet-Type:laohu"})
     @POST("/testHead}")

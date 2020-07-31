@@ -1,19 +1,27 @@
 
-
 package com.lamp.light;
 
 import java.nio.charset.Charset;
 
 public class LightUpload {
 
+    /**
+     * 文件名称
+     */
     private String name;
-    
+    /**
+     * 文件后缀
+     */
     private String type;
-    
+    /**
+     * 文件编码
+     */
     private Charset charset;
-    
+    /**
+     * 文件格式 String、InPutStream、byte[]
+     */
     private Object object;
-    
+
     public String getName() {
         return name;
     }
@@ -46,6 +54,5 @@ public class LightUpload {
         //
         this.object = object;
     }
-    
-    
+
 }

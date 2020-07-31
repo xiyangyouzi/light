@@ -129,21 +129,20 @@ public interface CoordinateHandler<T,V> {
                     String fileName = file.getName();
                     int index = fileName.lastIndexOf('.');
                    this.object.addBodyFileUpload(fileName.substring(0, index), file, ContentType.getContentType(fileName.substring(index+1)), true);
-                   FileUpload fileUpload = new DiskFileUpload(name, fileName, ContentType.getContentType(fileName.substring(index+1)),
-                       Objects.isNull(upload.getCharset()) ? "binary" : null, upload.getCharset(), file.length());
+                   FileUpload fileUpload = new DiskFileUpload(name, fileName, ContentType.getContentType(fileName.substring(index+1)), Objects.isNull(upload.getCharset()) ? "binary" : null, upload.getCharset(), file.length());
                    this.object.addBodyHttpData(fileUpload);
                 } else if (object2 instanceof InputStream) {
                     MemoryFileUpload memoryFileUpload = new MemoryFileUpload(upload.getName(), upload.getName()+"."+upload.getType(),  ContentType.getContentType(upload.getType()), Objects.isNull(upload.getCharset()) ? "binary" : null,upload.getCharset(), ((InputStream)object2).available());
                     memoryFileUpload.setContent((InputStream)object2);
                     this.object.addBodyHttpData(memoryFileUpload);
-                } else if(object2 instanceof Byte) {
+                } else if(object2 instanceof byte[]) {
                     byte[] bytes = (byte[])object2;
                     ByteBuf buffer = Unpooled.buffer(bytes.length);
                     buffer.writeBytes(bytes);
-                    MemoryFileUpload memoryFileUpload = new MemoryFileUpload(upload.getName(), upload.getName()+"."+upload.getType(),  ContentType.getContentType(upload.getType()), Objects.isNull(upload.getCharset()) ? "binary" : null,upload.getCharset(), ((InputStream)object2).available());
+                    MemoryFileUpload memoryFileUpload = new MemoryFileUpload(upload.getName(), upload.getName()+"."+upload.getType(),  ContentType.getContentType(upload.getType()), Objects.isNull(upload.getCharset()) ? "binary" : null,upload.getCharset(), bytes.length);
                     memoryFileUpload.setContent(buffer);
                     this.object.addBodyHttpData(memoryFileUpload);
-                }
+                } 
             }else {
                 throw new RuntimeException("运行异常");
             }
